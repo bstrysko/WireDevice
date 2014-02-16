@@ -1,3 +1,8 @@
+/*
+  WireDeviceExample.ino - WireDevice library for Arduino
+  Copyright (c) 2014 Brent Strysko.  All right reserved.
+*/
+
 #include <Wire.h>
 #include <WireDevice.h>
 
@@ -22,39 +27,54 @@ void loop()
   // Whatever you want to do
 }
 
-
-byte i2c_read(byte reg, byte* buffer)
+/*
+ * Called when the I2CMaster wants to read data from the Arduino 
+ * @param reg the register the master wants to read data from
+ * @param buffer a byte array that the Arduino will send to the master
+ * @return the number of bytes to send back to the master
+ */
+byte wireDeviceRead(byte reg, byte* buffer)
 { 
   switch(reg)
   {
-    case 0x01:
+    case REGISTER_A:
     {
-      buffer[0] = 10;
+      buffer[0] = 'A';
       return 1;
     }
-    case 0x02:
+    case REGISTER_B:
     {
-      buffer[0] = 20;
-      buffer[1] = 21;
+      buffer[0] = 'B';
+      buffer[1] = 'A';
       return 2; 
-    }
-    case 0x03:
-    {
-      buffer[0] = s;
-      return 1;
     }
   }
   
   return 0;
 }
 
-void i2c_write(byte reg, byte* buffer, byte bufferSize)
+/*
+ * Called when the I2CMaster wants to write to the Arduino
+ * @param reg the register the master wants to write data to
+ * @param buffer a byte array of size bufferSize containing data
+ * from the master.
+ * @param bufferSize the size of buffer
+ */
+void wireDeviceWrite(byte reg, byte* buffer, byte bufferSize)
 {
   switch(reg)
   {
      case REGISTER_A:
      {
-    
+        // buffer contains bufferSize bytes from the I2C master
+        // that are adressed to REGISTER_A
+        break;
+     }
+     case REGISTER_B:
+     {
+       // buffer contains bufferSize bytes from the I2C master
+       // that are adressed to REGISTER_B
+       break;
      }
   }
 }

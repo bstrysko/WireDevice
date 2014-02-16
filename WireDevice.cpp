@@ -7,10 +7,7 @@
 
 #include <Wire.h>
 
-bool TwoWireDevice::isWrite = false;
 byte TwoWireDevice::reg = 0;
-byte TwoWireDevice::bufferSize = 0;
-byte TwoWireDevice::buffer[TWO_WIRE_DEVICE_BUFFER_SIZE];
 TwoWireDeviceReadFunction TwoWireDevice::readFunction = 0;
 TwoWireDeviceWriteFunction TwoWireDevice::writeFunction = 0;
 
@@ -39,23 +36,22 @@ void TwoWireDevice::request()
 
 void TwoWireDevice::receive(int count)
 {
-	byte temp = Wire.read();
-    isWrite = !(!(temp & 0x80));
-	reg = (temp & ~0x80);
-  
-	int i = 0;
-  
-	while(Wire.available())
-	{
-		buffer[i] = Wire.read();
-		i++;
-	}
+	reg = Wire.read();
 
-	bufferSize = i;
-  
-	if(isWrite)
+	//write
+	if(count >= 2)
 	{
-		writeFunction(reg, buffer, bufferSize);
+		byte buffer[TWO_WIRE_DEVICE_BUFFER_SIZE];
+	
+		int i = 0;
+
+		while(Wire.available())
+		{
+			buffer[i] = Wire.read();
+			i++;
+		}
+	
+		writeFunction(reg, buffer, i);
 	}
 }
 

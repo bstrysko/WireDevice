@@ -21,10 +21,7 @@ typedef void (*TwoWireDeviceWriteFunction)(byte, byte*, byte);
 class TwoWireDevice
 {
   private:
-    static bool isWrite;
     static byte reg;
-    static byte bufferSize;
-    static byte buffer[TWO_WIRE_DEVICE_BUFFER_SIZE];
     static TwoWireDeviceReadFunction readFunction;
     static TwoWireDeviceWriteFunction writeFunction;
 
